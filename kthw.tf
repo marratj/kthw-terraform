@@ -11,7 +11,7 @@ module "masters" {
   source = "modules/vms"
 
   vm_prefix = "kthw-master"
-  vm_count  = 0
+  vm_count  = "${var.master_count}"
   vm_size   = "Standard_D1_v2"
 
   subnet_id           = "${module.vnet.subnet_id}"
@@ -26,7 +26,7 @@ module "workers" {
   source = "modules/vms"
 
   vm_prefix = "kthw-worker"
-  vm_count  = 0
+  vm_count  = "${var.master_count}"
   vm_size   = "Standard_B1ms"
 
   subnet_id           = "${module.vnet.subnet_id}"
