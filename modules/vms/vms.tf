@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "nics" {
+resource "azurerm_network_interface" "nic" {
   name                = "${var.vm_prefix}-${count.index}-nic"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
@@ -17,11 +17,11 @@ resource "azurerm_network_interface" "nics" {
   }
 }
 
-resource "azurerm_virtual_machine" "vms" {
+resource "azurerm_virtual_machine" "vm" {
   name                  = "${var.vm_prefix}-${count.index}"
   location              = "${var.location}"
   resource_group_name   = "${var.resource_group_name}"
-  network_interface_ids = ["${azurerm_network_interface.nics.*.id[count.index]}"]
+  network_interface_ids = ["${azurerm_network_interface.nic.*.id[count.index]}"]
   vm_size               = "${var.vm_size}"
 
   count = "${var.vm_count}"
@@ -61,7 +61,7 @@ resource "azurerm_virtual_machine" "vms" {
 
     ssh_keys {
       path     = "/home/kubeheinz/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgc0NiIoVMov1LH7NOpjrYBrzgdEVt/t4DmYO2wNCYIInBYrQvxr4NalO7tQhyowUqKYxKf7WRyXUkV0q8GnThsFz+g0hs4L93OVFmPc/GRlVljSXiK+/okqE2KGJVZVg5PRL/Mpi0Pg9zifcDOHDDyvap7AtSRpTWD50eSSRwuN1cKoWITrIaAWDtuo1pkfuzsb56aipA0rgxXHaDv2ODlTjnAjZ83qGNt1A7U6pEDpqUZ+ttIHoVP9qkputn4KUgxs6M6ycMIiA2OdJWveHGeyD/vdmE9Sc/3Po8XnQl6H5p6C+pu9wiXp0YPUcRp3R7J1dwRzQYHKBh31XUS93N marrat@MARRAT-PC"
+      key_data = "${var.ssh_key}"
     }
   }
   tags = "${var.azure_tags}"

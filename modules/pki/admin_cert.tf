@@ -35,11 +35,11 @@ resource "tls_locally_signed_cert" "kube_admin" {
 }
 
 resource "local_file" "kube_admin_key" {
-  content  = "${tls_private_key.kube_ca.private_key_pem}"
+  content  = "${tls_private_key.kube_admin.private_key_pem}"
   filename = "./tls/admin-key.pem"
 }
 
 resource "local_file" "kube_admin_crt" {
-  content  = "${tls_self_signed_cert.kube_ca.cert_pem}"
+  content  = "${tls_locally_signed_cert.kube_admin.cert_pem}"
   filename = "./tls/admin.pem"
 }

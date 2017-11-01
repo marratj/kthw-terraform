@@ -19,3 +19,5 @@ variable "master_ip_addresses" {
   description = "The list of private IP addresses for the master nodes"
   type        = "list"
 }
+
+variable "node_ssh_key" {}

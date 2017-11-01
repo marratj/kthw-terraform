@@ -7,3 +7,5 @@ worker_count = 3
 worker_ip_addresses = ["10.240.0.20", "10.240.0.21", "10.240.0.22"]
 
 location = "westeurope"
+
+node_ssh_key = ""

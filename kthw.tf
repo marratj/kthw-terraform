@@ -7,6 +7,13 @@ module "vnet" {
   vnet_address_space = ["10.240.0.0/24"]
 }
 
+module "lb" {
+  source = "modules/lb"
+
+  resource_group_name = "${module.vnet.resource_group_name}"
+  location            = "${var.location}"
+}
+
 module "masters" {
   source = "modules/vms"
 
@@ -39,4 +46,12 @@ module "workers" {
 
 module "pki" {
   source = "modules/pki"
+
+  kubelet_node_names = "${module.workers.names}"
+
+  #kubelet_node_ips = "${var.worker_ip_addresses}"
+  kubelet_node_ips = "${module.workers.private_ip_addresses}"
+
+  apiserver_master_ips = "${module.masters.private_ip_addresses}"
+  apiserver_public_ip  = "${module.lb.public_ip_address}"
 }
