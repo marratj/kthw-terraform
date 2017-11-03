@@ -11,3 +11,7 @@ I'm doing this for
 This is a work in progress and I update it whenever I find time to do so.
 
 Most probably there will be multiple refactors of the Terraform code, every time I think there might be another way to carry out a certain task.
+
+## SSH Agent
+
+The private key to `node_ssh_key` for accessing the VMs needs to be loaded in your SSH agent (for copying over the certificates to the instances).

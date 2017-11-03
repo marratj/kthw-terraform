@@ -4,6 +4,8 @@ variable "location" {
 
 variable "resource_group_name" {}
 
+variable "lb_name" {}
+
 variable "azure_tags" {
   type = "map"
 

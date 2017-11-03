@@ -14,6 +14,10 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = "${var.subnet_id}"
     private_ip_address_allocation = "${element(var.private_ip_addresses, count.index) != "" ? "static" : "dynamic"}"
     private_ip_address            = "${element(var.private_ip_addresses, count.index)}"
+
+    load_balancer_backend_address_pools_ids = [
+      "${var.lb_backend_pool != "" ? var.lb_backend_pool : ""}",
+    ]
   }
 }
 
@@ -53,14 +57,13 @@ resource "azurerm_virtual_machine" "vm" {
 
   os_profile {
     computer_name  = "${var.vm_prefix}-${count.index}"
-    admin_username = "kubeheinz"
-    admin_password = "Password1234!"
+    admin_username = "${var.username}"
   }
   os_profile_linux_config {
     disable_password_authentication = true
 
     ssh_keys {
-      path     = "/home/kubeheinz/.ssh/authorized_keys"
+      path     = "/home/${var.username}/.ssh/authorized_keys"
       key_data = "${var.ssh_key}"
     }
   }

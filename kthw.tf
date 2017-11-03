@@ -7,11 +7,22 @@ module "vnet" {
   vnet_address_space = ["10.240.0.0/24"]
 }
 
-module "lb" {
+module "lb_masters" {
   source = "modules/lb"
 
   resource_group_name = "${module.vnet.resource_group_name}"
   location            = "${var.location}"
+
+  lb_name = "lb_masters"
+}
+
+module "lb_workers" {
+  source = "modules/lb"
+
+  resource_group_name = "${module.vnet.resource_group_name}"
+  location            = "${var.location}"
+
+  lb_name = "lb_worker"
 }
 
 module "masters" {
@@ -27,6 +38,10 @@ module "masters" {
   location = "${var.location}"
 
   private_ip_addresses = "${var.master_ip_addresses}"
+  lb_backend_pool      = "${module.lb_masters.lb_backend_pool}"
+
+  username = "kubeheinz"
+  ssh_key  = "${var.node_ssh_key}"
 }
 
 module "workers" {
@@ -42,16 +57,22 @@ module "workers" {
   location = "${var.location}"
 
   private_ip_addresses = "${var.worker_ip_addresses}"
+  lb_backend_pool      = "${module.lb_workers.lb_backend_pool}"
+
+  username = "${var.node_user}"
+  ssh_key  = "${var.node_ssh_key}"
 }
 
 module "pki" {
   source = "modules/pki"
 
-  kubelet_node_names = "${module.workers.names}"
+  kubelet_node_names   = "${module.workers.names}"
+  apiserver_node_names = "${module.masters.names}"
 
-  #kubelet_node_ips = "${var.worker_ip_addresses}"
   kubelet_node_ips = "${module.workers.private_ip_addresses}"
 
   apiserver_master_ips = "${module.masters.private_ip_addresses}"
-  apiserver_public_ip  = "${module.lb.public_ip_address}"
+  apiserver_public_ip  = "${module.lb_masters.public_ip_address}"
+
+  node_user = "${var.node_user}"
 }

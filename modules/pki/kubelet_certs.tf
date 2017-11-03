@@ -48,12 +48,33 @@ resource "local_file" "kubelet_key" {
   count = "${length(var.kubelet_node_names)}"
 
   content  = "${tls_private_key.kubelet.*.private_key_pem[count.index]}"
-  filename = "./tls/kubelet-${element(var.kubelet_node_names, count.index)}-key.pem"
+  filename = "./tls/kubelet/${element(var.kubelet_node_names, count.index)}-key.pem"
 }
 
 resource "local_file" "kubelet_crt" {
   count = "${length(var.kubelet_node_names)}"
 
   content  = "${tls_locally_signed_cert.kubelet.*.cert_pem[count.index]}"
-  filename = "./tls/kubelet-${element(var.kubelet_node_names, count.index)}.pem"
+  filename = "./tls/kubelet/${element(var.kubelet_node_names, count.index)}.pem"
+}
+
+resource "null_resource" "kubelet_certs" {
+  count = "${length(var.kubelet_node_names)}"
+
+  connection {
+    type         = "ssh"
+    user         = "${var.node_user}"
+    host         = "${element(var.kubelet_node_names, count.index)}"
+    bastion_host = "${var.apiserver_public_ip}"
+  }
+
+  provisioner "file" {
+    source      = "tls/kubelet/${element(var.kubelet_node_names, count.index)}.pem"
+    destination = "~/${element(var.kubelet_node_names, count.index)}.pem"
+  }
+
+  provisioner "file" {
+    source      = "tls/kubelet/${element(var.kubelet_node_names, count.index)}-key.pem"
+    destination = "~/${element(var.kubelet_node_names, count.index)}-key.pem"
+  }
 }

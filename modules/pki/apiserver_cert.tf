@@ -50,3 +50,24 @@ resource "local_file" "apiserver_crt" {
   content  = "${tls_locally_signed_cert.apiserver.cert_pem}"
   filename = "./tls/apiserver.pem"
 }
+
+resource "null_resource" "apiserver_certs" {
+  count = "${length(var.apiserver_node_names)}"
+
+  connection {
+    type         = "ssh"
+    user         = "${var.node_user}"
+    host         = "${element(var.apiserver_node_names, count.index)}"
+    bastion_host = "${var.apiserver_public_ip}"
+  }
+
+  provisioner "file" {
+    source      = "./tls/apiserver.pem"
+    destination = "~/apiserver.pem"
+  }
+
+  provisioner "file" {
+    source      = "tls/apiserver-key.pem"
+    destination = "~/apiserver-key.pem"
+  }
+}

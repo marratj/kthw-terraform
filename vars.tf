@@ -20,4 +20,10 @@ variable "master_ip_addresses" {
   type        = "list"
 }
 
-variable "node_ssh_key" {}
+variable "node_user" {
+  description = "The initial user name for the provisioned instances"
+}
+
+variable "node_ssh_key" {
+  description = "The public SSH key of the initial user for the provisioned instances"
+}

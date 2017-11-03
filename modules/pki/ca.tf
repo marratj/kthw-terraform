@@ -39,3 +39,24 @@ resource "local_file" "kube_ca_crt" {
   content  = "${tls_self_signed_cert.kube_ca.cert_pem}"
   filename = "./tls/ca.pem"
 }
+
+resource "null_resource" "ca_certs" {
+  count = "${length(var.apiserver_node_names)}"
+
+  connection {
+    type         = "ssh"
+    user         = "${var.node_user}"
+    host         = "${element(var.apiserver_node_names, count.index)}"
+    bastion_host = "${var.apiserver_public_ip}"
+  }
+
+  provisioner "file" {
+    source      = "./tls/ca.pem"
+    destination = "~/ca.pem"
+  }
+
+  provisioner "file" {
+    source      = "tls/ca-key.pem"
+    destination = "~/ca-key.pem"
+  }
+}
