@@ -16,13 +16,26 @@ module "lb_masters" {
   lb_name = "lb_masters"
 }
 
+module "master_ssh_inbound" {
+  source              = "modules/lb_rule"
+  resource_group_name = "${module.vnet.resource_group_name}"
+
+  loadbalancer_id           = "${module.lb_masters.lb_id}"
+  name                      = "ssh"
+  protocol                  = "Tcp"
+  frontend_port             = 22
+  backend_port              = 22
+  frontend_ip_configuration = "${module.lb_masters.frontend_ip_config}"
+  backend_ip_address_pool   = "${module.lb_masters.lb_backend_pool}"
+}
+
 module "lb_workers" {
   source = "modules/lb"
 
   resource_group_name = "${module.vnet.resource_group_name}"
   location            = "${var.location}"
 
-  lb_name = "lb_worker"
+  lb_name = "lb_workers"
 }
 
 module "masters" {
