@@ -53,7 +53,7 @@ module "masters" {
   private_ip_addresses = "${var.master_ip_addresses}"
   lb_backend_pool      = "${module.lb_masters.lb_backend_pool}"
 
-  username = "kubeheinz"
+  username = "${var.node_user}"
   ssh_key  = "${var.node_ssh_key}"
 }
 
