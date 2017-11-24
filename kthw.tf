@@ -61,7 +61,7 @@ module "workers" {
   source = "modules/vms"
 
   vm_prefix = "kthw-worker"
-  vm_count  = "${var.master_count}"
+  vm_count  = "${var.worker_count}"
   vm_size   = "Standard_B1ms"
 
   subnet_id           = "${module.vnet.subnet_id}"
