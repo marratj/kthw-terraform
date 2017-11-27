@@ -11,6 +11,10 @@ resource "tls_cert_request" "kubelet" {
 
   count = "${length(var.kubelet_node_names)}"
 
+  lifecycle {
+    ignore_changes = ["id"]
+  }
+
   ip_addresses = [
     "${element(var.kubelet_node_ips, count.index)}",
   ]
@@ -60,6 +64,8 @@ resource "local_file" "kubelet_crt" {
 
 resource "null_resource" "kubelet_certs" {
   count = "${length(var.kubelet_node_names)}"
+
+  depends_on = ["local_file.kubelet_crt"]
 
   connection {
     type         = "ssh"
