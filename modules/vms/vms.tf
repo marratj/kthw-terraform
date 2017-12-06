@@ -68,4 +68,28 @@ resource "azurerm_virtual_machine" "vm" {
     }
   }
   tags = "${var.azure_tags}"
+  connection {
+    type         = "ssh"
+    user         = "${var.username}"
+    host         = "${var.vm_prefix}-${count.index}"
+    bastion_host = "${var.public_ip}"
+  }
+  provisioner "file" {
+    source      = "consul/consul.service"
+    destination = "/tmp/consul.service"
+  }
+  provisioner "file" {
+    source      = "${var.consul_agent_type == "server" ? "consul/consul-server.env" : "consul/consul-client.env"}"
+    destination = "/tmp/consul.env"
+  }
+  provisioner "file" {
+    source      = "consul/consul.sh"
+    destination = "/tmp/consul.sh"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get install -y unzip",
+      "sudo bash /tmp/consul.sh",
+    ]
+  }
 }

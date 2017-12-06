@@ -43,3 +43,14 @@ variable "azure_tags" {
     environment = "KTHW"
   }
 }
+
+variable "public_ip" {
+  type        = "string"
+  description = "The public IP address for the consul privisioning"
+}
+
+variable "consul_agent_type" {
+  type        = "string"
+  description = "The type of the Consul agent to deploy (server or client)"
+  default     = "client"
+}

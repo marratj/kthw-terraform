@@ -55,6 +55,10 @@ module "masters" {
 
   username = "${var.node_user}"
   ssh_key  = "${var.node_ssh_key}"
+
+  public_ip = "${module.lb_masters.public_ip_address}"
+
+  consul_agent_type = "server"
 }
 
 module "workers" {
@@ -62,7 +66,7 @@ module "workers" {
 
   vm_prefix = "kthw-worker"
   vm_count  = "${var.worker_count}"
-  vm_size   = "Standard_B1ms"
+  vm_size   = "Standard_D1_v2"
 
   subnet_id           = "${module.vnet.subnet_id}"
   resource_group_name = "${module.vnet.resource_group_name}"
@@ -74,6 +78,8 @@ module "workers" {
 
   username = "${var.node_user}"
   ssh_key  = "${var.node_ssh_key}"
+
+  public_ip = "${module.lb_masters.public_ip_address}"
 }
 
 module "pki" {
