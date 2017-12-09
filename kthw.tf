@@ -95,3 +95,11 @@ module "pki" {
 
   node_user = "${var.node_user}"
 }
+
+module "kubeconfig" {
+  source = "modules/kubeconfig"
+
+  kubelet_node_names  = "${module.workers.names}"
+  apiserver_public_ip = "${module.lb_masters.public_ip_address}"
+  node_user           = "${var.node_user}"
+}
