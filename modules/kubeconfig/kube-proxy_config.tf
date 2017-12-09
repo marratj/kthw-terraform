@@ -1,20 +1,20 @@
-resource "null_resource" "kubelet_configs" {
+resource "null_resource" "kube-proxy_config" {
   count = "${length(var.kubelet_node_names)}"
 
   provisioner "local-exec" {
-    command = "kubectl config set-cluster kubernetes-the-hard-way --certificate-authority=tls/ca.pem --embed-certs=true --server=https://${var.apiserver_public_ip}:6443 --kubeconfig=generated/kube-proxy.kubeconfig"
+    command = "kubectl config set-cluster kubernetes-the-hard-way --certificate-authority=${var.ca_crt_file} --embed-certs=true --server=https://${var.apiserver_public_ip}:6443 --kubeconfig=./generated/kube-proxy.kubeconfig"
   }
 
   provisioner "local-exec" {
-    command = "kubectl config set-credentials kube-proxy --client-certificate=tls/kube-proxy.pem --client-key=tls/kube-proxy-key.pem --embed-certs=true --kubeconfig=generated/kube-proxy.kubeconfig"
+    command = "kubectl config set-credentials kube-proxy --client-certificate=${var.kube-proxy_crt_file} --client-key=${var.kube-proxy_key_file} --embed-certs=true --kubeconfig=./generated/kube-proxy.kubeconfig"
   }
 
   provisioner "local-exec" {
-    command = "kubectl config set-context default --cluster=kubernetes-the-hard-way --user=kube-proxy --kubeconfig=generated/kube-proxy.kubeconfig"
+    command = "kubectl config set-context default --cluster=kubernetes-the-hard-way --user=kube-proxy --kubeconfig=./generated/kube-proxy.kubeconfig"
   }
 
   provisioner "local-exec" {
-    command = "kubectl config use-context default --kubeconfig=generated/kube-proxy.kubeconfig"
+    command = "kubectl config use-context default --kubeconfig=./generated/kube-proxy.kubeconfig"
   }
 
   connection {
@@ -25,7 +25,7 @@ resource "null_resource" "kubelet_configs" {
   }
 
   provisioner "file" {
-    source      = "generated/kube-proxy.kubeconfig"
+    source      = "./generated/kube-proxy.kubeconfig"
     destination = "~/kube-proxy.kubeconfig"
   }
 }
