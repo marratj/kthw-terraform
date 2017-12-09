@@ -99,6 +99,8 @@ module "pki" {
 module "kubeconfig" {
   source = "modules/kubeconfig"
 
+  depends_on = ["module.pki"]
+
   kubelet_node_names  = "${module.workers.names}"
   apiserver_public_ip = "${module.lb_masters.public_ip_address}"
   node_user           = "${var.node_user}"
