@@ -1,0 +1,35 @@
+image: marratj/pipeline-tools:0.3
+
+before_script:
+  - eval $(ssh-agent)
+  - curl "$PRIV_KEY" > gitlab.private
+  - chmod 0400 gitlab.private
+  - ssh-add gitlab.private
+
+terraform-plan:
+  stage: test
+  except:
+    - destroy
+  script:
+    - terraform init
+    - terraform plan -out tfplan
+  artifacts:
+    paths:
+      - tfplan
+    expire_in: 1 day
+
+terraform-apply:
+  stage: deploy
+  only:
+    - master
+  script:
+    - terraform init
+    - terraform apply tfplan
+
+terraform-destroy:
+  stage: deploy
+  only:
+    - destroy
+  script:
+    - terraform init
+    - terraform destroy -force
