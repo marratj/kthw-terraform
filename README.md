@@ -12,9 +12,23 @@ This is a work in progress and I update it whenever I find time to do so.
 
 Most probably there will be multiple refactors of the Terraform code, every time I think there might be another way to carry out a certain task.
 
+## Client tools prerequisites
+
+You need to have kubectl installed for interacting with the cluster and also for Terraform to be able to generate configuration files.
+
+Download the current release from https://storage.googleapis.com/kubernetes-release/release/v1.9.0/bin/linux/amd64/kubectl
+
+Also, you obviously need to have Terraform installed for running the code in this repository.
+
+Download the current version from https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
+
+Next, for Terraform to be able to authenticate with Azure, you either need to set up a service principal in your Azure account (https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html) or have Azure CLI installed (https://www.terraform.io/docs/providers/azurerm/authenticating_via_azure_cli.html)
+
 ## SSH Agent
 
 The private key to `node_ssh_key` for accessing the VMs needs to be loaded in your SSH agent (for copying over the certificates to the instances).
+
+
 
 ## Chapter 03 - Provisioning Compute Resources
 
@@ -56,3 +70,15 @@ This is achieved with the following Terraform module:
   - the apiserver key & cert to the apiserver instances
   - the kubelet keys & certs per node to the worker instances
   - the CA cert to each worker instance
+
+## Chapter 05 - Generating Kubernetes Configuration Files for Authentication
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/05-kubernetes-configuration-files.md
+
+This is achieved with the following Terraform module:
+
+[modules/kubeconfig](modules/kubeconfig)
+
+- This module creates the client authentication configs for the kubelet and kube-proxy
+  - it does so by calling the appropriate `kubectl config` commands 
+  - and copying the kubeconfig files to each node

@@ -25,7 +25,7 @@ resource "null_resource" "kubelet_configs" {
   }
 
   provisioner "file" {
-    source      = "generated/${element(var.kubelet_node_names, count.index)}.kubeconfig"
+    source      = "./generated/${element(var.kubelet_node_names, count.index)}.kubeconfig"
     destination = "~/${element(var.kubelet_node_names, count.index)}.kubeconfig"
   }
 }
