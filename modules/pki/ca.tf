@@ -56,7 +56,7 @@ resource "null_resource" "ca_certs" {
   }
 
   provisioner "file" {
-    source      = "tls/ca-key.pem"
+    source      = "./tls/ca-key.pem"
     destination = "~/ca-key.pem"
   }
 }

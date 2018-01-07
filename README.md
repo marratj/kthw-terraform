@@ -36,3 +36,23 @@ This is achieved with the following Terraform modules:
 - [modules/vms](modules/vms)
   - This module creates the actual VMs and takes some parameters for naming, instance size, networking & load-balancer allocation
   - This currently deploys Ubuntu 16.04 VMs with a Consul agent running
+
+## Chapter 04 - Provisioning a CA and Generating TLS Certificates
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/04-certificate-authority.md
+
+This is achieved with the following Terraform module:
+
+[modules/pki](modules/pki)
+
+- This module creates the PKI infrastructure for the cluster:
+  - the Certificate Authority
+  - an Admin Client certificate
+  - a Kubelet Client certificate per node
+  - the kube-proxy Client certificate
+  - the apiserver Server certificate
+- also, it distributes the keys and certificates to the appropriate instances
+  - the CA key & cert to the apiserver instances
+  - the apiserver key & cert to the apiserver instances
+  - the kubelet keys & certs per node to the worker instances
+  - the CA cert to each worker instance
