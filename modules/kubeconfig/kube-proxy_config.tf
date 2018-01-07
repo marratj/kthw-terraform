@@ -1,5 +1,4 @@
 resource "null_resource" "kube-proxy_config" {
-  count = "${length(var.kubelet_node_names)}"
 
   provisioner "local-exec" {
     command = "kubectl config set-cluster kubernetes-the-hard-way --certificate-authority=${var.ca_crt_file} --embed-certs=true --server=https://${var.apiserver_public_ip}:6443 --kubeconfig=./generated/kube-proxy.kubeconfig"
@@ -16,6 +15,10 @@ resource "null_resource" "kube-proxy_config" {
   provisioner "local-exec" {
     command = "kubectl config use-context default --kubeconfig=./generated/kube-proxy.kubeconfig"
   }
+}
+
+resource "null_resource" "kube-proxy-provisioner" {
+  count = "${length(var.kubelet_node_names)}"
 
   connection {
     type         = "ssh"
