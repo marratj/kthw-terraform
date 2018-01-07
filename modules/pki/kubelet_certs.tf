@@ -84,3 +84,22 @@ resource "null_resource" "kubelet_certs" {
     destination = "~/${element(var.kubelet_node_names, count.index)}-key.pem"
   }
 }
+
+resource "null_resource" "worker_ca_cert" {
+  count = "${length(var.kubelet_node_names)}"
+
+  depends_on = ["local_file.kube_ca_crt"]
+
+  connection {
+    type         = "ssh"
+    user         = "${var.node_user}"
+    host         = "${element(var.kubelet_node_names, count.index)}"
+    bastion_host = "${var.apiserver_public_ip}"
+  }
+
+  provisioner "file" {
+    source      = "./tls/ca-key.pem"
+    destination = "~/ca-key.pem"
+  }
+  
+}
