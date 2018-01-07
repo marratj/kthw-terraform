@@ -82,3 +82,13 @@ This is achieved with the following Terraform module:
 - This module creates the client authentication configs for the kubelet and kube-proxy
   - it does so by calling the appropriate `kubectl config` commands 
   - and copying the kubeconfig files to each node
+
+## Chapter 06 - Generating the Data Encryption Config and Key
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/06-data-encryption-keys.md
+
+This is achieved with the following Terraform module:
+
+[modules/encryption_config)(modules/encryption_config)
+
+- This module creates the encryption config YAML file and copies it to the master nodes

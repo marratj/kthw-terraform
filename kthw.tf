@@ -109,3 +109,11 @@ module "kubeconfig" {
   kube-proxy_key_file = "${module.pki.kube-proxy_key_file}"
   ca_crt_file         = "${module.pki.kube_ca_crt_file}"
 }
+
+module "encryption_config" {
+  source               = "modules/encryption_config"
+  apiserver_node_names = "${module.masters.names}"
+  apiserver_public_ip  = "${module.lb_masters.public_ip_address}"
+
+  node_user = "${var.node_user}"
+}
