@@ -8,8 +8,20 @@ jobs:
       - run: echo "test"
       - run: terraform init -backend-config="$BACKEND_STORAGE_ACCOUNT_NAME" -backend-config="$BACKEND_RESOURCE_GROUP_NAME" -backend-config="$BACKEND_CONTAINER_NAME" -backend-config="$BACKEND_KEY"
       - run: terraform plan
+  deploy:
+    docker:
+      - image: marratj/pipeline-tools:0.4
+    steps:
+      - checkout
+      - run: echo "test"
+      - run: terraform init -backend-config="$BACKEND_STORAGE_ACCOUNT_NAME" -backend-config="$BACKEND_RESOURCE_GROUP_NAME" -backend-config="$BACKEND_CONTAINER_NAME" -backend-config="$BACKEND_KEY"
+      - run: terraform apply -auto-approval
 workflows:
   version: 2
-  test:
+  kthw-terraform:
     jobs:
       - test
+      - deploy:
+          filters:
+            branches:
+              only: master
