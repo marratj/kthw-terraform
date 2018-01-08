@@ -76,6 +76,7 @@ RUN mv govc_linux_386 /bin/govc
 RUN chmod +x /bin/govc
 
 ADD https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl /bin
+RUN chmod +x /bin/kubectl
 
 # default command: display Ansible version
 CMD [ "ansible-playbook", "--version" ]
