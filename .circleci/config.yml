@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run: echo "test"
-      - run: terraform init $BACKEND_CONFIG
+      - run: terraform init -backend-config="$BACKEND_STORAGE_ACCOUNT_NAME" -backend-config="$BACKEND_RESOURCE_GROUP_NAME" -backend-config="$BACKEND_CONTAINER_NAME" -backend-config="$BACKEND_KEY"
       - run: terraform plan
 workflows:
   version: 2
