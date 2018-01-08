@@ -5,6 +5,7 @@ jobs:
       - image: marratj/pipeline-tools:0.4
     steps:
       - checkout
+      - run: echo "test"
       - run: terraform init
       - run: terraform plan
 workflows:
