@@ -5,17 +5,23 @@ jobs:
       - image: marratj/pipeline-tools:0.4
     steps:
       - checkout
-      - run: echo "test"
+      - run: mkdir -p plan
       - run: terraform init -backend-config="$BACKEND_STORAGE_ACCOUNT_NAME" -backend-config="$BACKEND_RESOURCE_GROUP_NAME" -backend-config="$BACKEND_CONTAINER_NAME" -backend-config="$BACKEND_KEY"
-      - run: terraform plan
+      - run: terraform plan -out=plan/kthwplan
+      - persist_to_workspace:
+          root: plan
+          paths:
+            - kthwplan
   deploy:
     docker:
       - image: marratj/pipeline-tools:0.4
     steps:
       - checkout
-      - run: echo "test"
+      - attach_workspace:
+          at: plan
       - run: terraform init -backend-config="$BACKEND_STORAGE_ACCOUNT_NAME" -backend-config="$BACKEND_RESOURCE_GROUP_NAME" -backend-config="$BACKEND_CONTAINER_NAME" -backend-config="$BACKEND_KEY"
-      - run: terraform apply -auto-approval
+      - run: terraform apply plan/kthwplan
+
 workflows:
   version: 2
   kthw-terraform:
