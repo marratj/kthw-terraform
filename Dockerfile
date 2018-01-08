@@ -20,6 +20,8 @@ ENV PACKER_SHA256SUM=e407566e2063ac697e0bbf6f2dd334be448d58bed93f44a186408bf1fc5
 
 ENV GOVC_VERSION=v0.15.0
 
+ENV KUBECTL_VERSION=v1.9.0
+
 
 RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
     apk --update add sudo                                         && \
@@ -72,6 +74,9 @@ ADD https://github.com/vmware/govmomi/releases/download/${GOVC_VERSION}/govc_lin
 RUN gunzip govc_linux_386.gz
 RUN mv govc_linux_386 /bin/govc
 RUN chmod +x /bin/govc
+
+ADD https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl /bin
+RUN chmod +x /bin/kubectl
 
 # default command: display Ansible version
 CMD [ "ansible-playbook", "--version" ]

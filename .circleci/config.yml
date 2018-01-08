@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: marratj/pipeline-tools:0.4
+      - image: marratj/pipeline-tools:0.5
     steps:
       - checkout
       - run: mkdir -p plan
