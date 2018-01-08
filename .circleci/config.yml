@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run: echo "test"
-      - run: terraform init
+      - run: terraform init $BACKEND_CONFIG
       - run: terraform plan
 workflows:
   version: 2
