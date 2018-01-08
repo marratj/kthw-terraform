@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: marratj/pipeline-tools:0.4
+    steps:
+      - checkout
+      - run: terraform init
+      - run: terraform plan
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test

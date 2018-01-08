@@ -10,4 +10,4 @@ location = "westeurope"
 
 node_user = "kubeheinz"
 
-node_ssh_key = ""
+# node_ssh_key = ""
