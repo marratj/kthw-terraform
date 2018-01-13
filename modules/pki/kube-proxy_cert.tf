@@ -36,10 +36,10 @@ resource "tls_locally_signed_cert" "kube_proxy" {
 
 resource "local_file" "kube_proxy_key" {
   content  = "${tls_private_key.kube_proxy.private_key_pem}"
-  filename = "./tls/kube-proxy-key.pem"
+  filename = "./generated/tls/kube-proxy-key.pem"
 }
 
 resource "local_file" "kube_proxy_crt" {
   content  = "${tls_locally_signed_cert.kube_proxy.cert_pem}"
-  filename = "./tls/kube-proxy.pem"
+  filename = "./generated/tls/kube-proxy.pem"
 }
