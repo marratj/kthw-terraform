@@ -103,8 +103,8 @@ module "kubeconfig" {
   apiserver_public_ip = "${module.lb_masters.public_ip_address}"
   node_user           = "${var.node_user}"
 
-  kubelet_crt_pems  = "${module.pki.kubelet_crt_pems}"
-  kubelet_key_pems  = "${module.pki.kubelet_key_pems}"
+  kubelet_crt_pems   = "${module.pki.kubelet_crt_pems}"
+  kubelet_key_pems   = "${module.pki.kubelet_key_pems}"
   kube-proxy_crt_pem = "${module.pki.kube-proxy_crt_pem}"
   kube-proxy_key_pem = "${module.pki.kube-proxy_key_pem}"
   kube_ca_crt_pem    = "${module.pki.kube_ca_crt_pem}"

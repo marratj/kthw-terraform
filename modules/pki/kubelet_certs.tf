@@ -75,12 +75,12 @@ resource "null_resource" "kubelet_certs" {
   }
 
   provisioner "file" {
-    source      = "tls/kubelet/${element(var.kubelet_node_names, count.index)}.pem"
+    source      = "./generated/tls/kubelet/${element(var.kubelet_node_names, count.index)}.pem"
     destination = "~/${element(var.kubelet_node_names, count.index)}.pem"
   }
 
   provisioner "file" {
-    source      = "tls/kubelet/${element(var.kubelet_node_names, count.index)}-key.pem"
+    source      = "./generated/tls/kubelet/${element(var.kubelet_node_names, count.index)}-key.pem"
     destination = "~/${element(var.kubelet_node_names, count.index)}-key.pem"
   }
 }
@@ -98,8 +98,8 @@ resource "null_resource" "worker_ca_cert" {
   }
 
   provisioner "file" {
-    source      = "./generated/tls/ca-key.pem"
-    destination = "~/ca-key.pem"
+    source      = "./generated/tls/ca.pem"
+    destination = "~/ca.pem"
   }
   
 }

@@ -67,7 +67,7 @@ resource "null_resource" "apiserver_certs" {
   }
 
   provisioner "file" {
-    source      = "tls/apiserver-key.pem"
+    source      = "./generated/tls/apiserver-key.pem"
     destination = "~/apiserver-key.pem"
   }
 }
