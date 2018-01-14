@@ -17,6 +17,8 @@ resource "local_file" "kube-proxy_config" {
 resource "null_resource" "kube-proxy-provisioner" {
   count = "${length(var.kubelet_node_names)}"
 
+  depends_on = ["local_file.kube-proxy_config"]
+
   connection {
     type         = "ssh"
     user         = "${var.node_user}"
