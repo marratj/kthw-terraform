@@ -2,7 +2,7 @@
 data "template_file" "kubelet_config_template" {
   template = "${file("${path.module}/kubelet_config.tpl")}"
 
-  count = "${length(var.kubelet_node_names)}"
+  count = "${var.kubelet_count}"
 
   vars {
     certificate-authority-data = "${base64encode(var.kube_ca_crt_pem)}"

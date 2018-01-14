@@ -3,6 +3,10 @@ variable "kubelet_node_names" {
   description = "The list of nodes that will have a kubelet client certificate generated"
 }
 
+variable "kubelet_count" {
+  description = "Count of kubelets (required for the kubelet config template data source). Must be identical to the count of workers"
+}
+
 variable "apiserver_public_ip" {
   type        = "string"
   description = "The public IP address for the apiserver certificate"

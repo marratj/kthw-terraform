@@ -100,6 +100,7 @@ module "kubeconfig" {
   source = "modules/kubeconfig"
 
   kubelet_node_names  = "${module.workers.names}"
+  kubelet_count       = "${var.worker_count}"
   apiserver_public_ip = "${module.lb_masters.public_ip_address}"
   node_user           = "${var.node_user}"
 
