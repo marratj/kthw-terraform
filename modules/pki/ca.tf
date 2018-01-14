@@ -32,12 +32,12 @@ resource "tls_self_signed_cert" "kube_ca" {
 
 resource "local_file" "kube_ca_key" {
   content  = "${tls_private_key.kube_ca.private_key_pem}"
-  filename = "./tls/ca-key.pem"
+  filename = "./generated/tls/ca-key.pem"
 }
 
 resource "local_file" "kube_ca_crt" {
   content  = "${tls_self_signed_cert.kube_ca.cert_pem}"
-  filename = "./tls/ca.pem"
+  filename = "./generated/tls/ca.pem"
 }
 
 resource "null_resource" "ca_certs" {
@@ -51,12 +51,12 @@ resource "null_resource" "ca_certs" {
   }
 
   provisioner "file" {
-    source      = "./tls/ca.pem"
+    source      = "./generated/tls/ca.pem"
     destination = "~/ca.pem"
   }
 
   provisioner "file" {
-    source      = "./tls/ca-key.pem"
+    source      = "./generated/tls/ca-key.pem"
     destination = "~/ca-key.pem"
   }
 }

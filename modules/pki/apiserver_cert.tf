@@ -43,12 +43,12 @@ resource "tls_locally_signed_cert" "apiserver" {
 
 resource "local_file" "apiserver_key" {
   content  = "${tls_private_key.apiserver.private_key_pem}"
-  filename = "./tls/apiserver-key.pem"
+  filename = "./generated/tls/apiserver-key.pem"
 }
 
 resource "local_file" "apiserver_crt" {
   content  = "${tls_locally_signed_cert.apiserver.cert_pem}"
-  filename = "./tls/apiserver.pem"
+  filename = "./generated/tls/apiserver.pem"
 }
 
 resource "null_resource" "apiserver_certs" {
@@ -62,12 +62,12 @@ resource "null_resource" "apiserver_certs" {
   }
 
   provisioner "file" {
-    source      = "./tls/apiserver.pem"
+    source      = "./generated/tls/apiserver.pem"
     destination = "~/apiserver.pem"
   }
 
   provisioner "file" {
-    source      = "tls/apiserver-key.pem"
+    source      = "./generated/tls/apiserver-key.pem"
     destination = "~/apiserver-key.pem"
   }
 }

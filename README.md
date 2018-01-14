@@ -1,5 +1,7 @@
 # A Terraform version of Kubernetes The Hard Way
 
+[![CircleCI](https://circleci.com/gh/marratj/kthw-terraform.svg?style=svg)](https://circleci.com/gh/marratj/kthw-terraform)
+
 This is my implementation of [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way) in Terraform on Microsoft Azure instead of Google Cloud Platform.
 
 I'm doing this for 

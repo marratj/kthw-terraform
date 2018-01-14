@@ -1,20 +1,17 @@
-resource "null_resource" "kube-proxy_config" {
+data "template_file" "kube-proxy_config_template" {
+  template = "${file("${path.module}/kube-proxy_config.tpl")}"
 
-  provisioner "local-exec" {
-    command = "kubectl config set-cluster kubernetes-the-hard-way --certificate-authority=${var.ca_crt_file} --embed-certs=true --server=https://${var.apiserver_public_ip}:6443 --kubeconfig=./generated/kube-proxy.kubeconfig"
+  vars {
+    certificate-authority-data = "${base64encode(var.kube_ca_crt_pem)}"
+    client-certificate-data = "${base64encode(var.kube-proxy_crt_pem)}"
+    client-key-data = "${base64encode(var.kube-proxy_key_pem)}"
+    apiserver_public_ip = "${var.apiserver_public_ip}"
   }
+}
 
-  provisioner "local-exec" {
-    command = "kubectl config set-credentials kube-proxy --client-certificate=${var.kube-proxy_crt_file} --client-key=${var.kube-proxy_key_file} --embed-certs=true --kubeconfig=./generated/kube-proxy.kubeconfig"
-  }
-
-  provisioner "local-exec" {
-    command = "kubectl config set-context default --cluster=kubernetes-the-hard-way --user=kube-proxy --kubeconfig=./generated/kube-proxy.kubeconfig"
-  }
-
-  provisioner "local-exec" {
-    command = "kubectl config use-context default --kubeconfig=./generated/kube-proxy.kubeconfig"
-  }
+resource "local_file" "kube-proxy_config" {
+  content  = "${data.template_file.kube-proxy_config_template.rendered}"
+  filename = "./generated/kube-proxy.kubeconfig"
 }
 
 resource "null_resource" "kube-proxy-provisioner" {

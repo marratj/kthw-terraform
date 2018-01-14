@@ -9,3 +9,4 @@ resources:
             - name: key1
               secret: ${encryption_key}
       - identity: {}
+
