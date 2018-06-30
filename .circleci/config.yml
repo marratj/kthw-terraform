@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  test:
+  plan:
     docker:
-      - image: marratj/pipeline-tools:0.5
+      - image: hashicorp/terraform
     steps:
       - checkout
       - run: mkdir -p plan
@@ -12,22 +12,30 @@ jobs:
           root: plan
           paths:
             - kthwplan
-  deploy:
+  apply:
     docker:
-      - image: marratj/pipeline-tools:0.5
+      - image: hashicorp/terraform
     steps:
       - checkout
       - attach_workspace:
           at: plan
       - run: terraform init -backend-config="$BACKEND_STORAGE_ACCOUNT_NAME" -backend-config="$BACKEND_RESOURCE_GROUP_NAME" -backend-config="$BACKEND_CONTAINER_NAME" -backend-config="$BACKEND_KEY"
       - run: terraform apply plan/kthwplan
+  
+  destroy:
+    docker:
+      - image: hashicorp/terraform
+    steps:
+      - checkout
+      - run: terraform init -backend-config="$BACKEND_STORAGE_ACCOUNT_NAME" -backend-config="$BACKEND_RESOURCE_GROUP_NAME" -backend-config="$BACKEND_CONTAINER_NAME" -backend-config="$BACKEND_KEY"
+      - run: terraform destroy -force
 
 workflows:
   version: 2
   kthw-terraform:
     jobs:
-      - test
-      - deploy:
+      - plan
+      - apply:
           requires:
             - test
           filters:

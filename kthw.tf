@@ -99,16 +99,23 @@ module "pki" {
 module "kubeconfig" {
   source = "modules/kubeconfig"
 
-  kubelet_node_names  = "${module.workers.names}"
-  kubelet_count       = "${var.worker_count}"
-  apiserver_public_ip = "${module.lb_masters.public_ip_address}"
-  node_user           = "${var.node_user}"
+  kubelet_node_names   = "${module.workers.names}"
+  apiserver_node_names = "${module.masters.names}"
+  kubelet_count        = "${var.worker_count}"
+  apiserver_public_ip  = "${module.lb_masters.public_ip_address}"
+  node_user            = "${var.node_user}"
 
-  kubelet_crt_pems   = "${module.pki.kubelet_crt_pems}"
-  kubelet_key_pems   = "${module.pki.kubelet_key_pems}"
-  kube-proxy_crt_pem = "${module.pki.kube-proxy_crt_pem}"
-  kube-proxy_key_pem = "${module.pki.kube-proxy_key_pem}"
-  kube_ca_crt_pem    = "${module.pki.kube_ca_crt_pem}"
+  kubelet_crt_pems                = "${module.pki.kubelet_crt_pems}"
+  kubelet_key_pems                = "${module.pki.kubelet_key_pems}"
+  kube-proxy_crt_pem              = "${module.pki.kube-proxy_crt_pem}"
+  kube-proxy_key_pem              = "${module.pki.kube-proxy_key_pem}"
+  admin_crt_pem                   = "${module.pki.admin_crt_pem}"
+  admin_key_pem                   = "${module.pki.admin_key_pem}"
+  kube-scheduler_crt_pem          = "${module.pki.kube-scheduler_crt_pem}"
+  kube-scheduler_key_pem          = "${module.pki.kube-scheduler_key_pem}"
+  kube-controller-manager_crt_pem = "${module.pki.kube-controller-manager_crt_pem}"
+  kube-controller-manager_key_pem = "${module.pki.kube-controller-manager_key_pem}"
+  kube_ca_crt_pem                 = "${module.pki.kube_ca_crt_pem}"
 }
 
 module "encryption_config" {
