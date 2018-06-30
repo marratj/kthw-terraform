@@ -14,7 +14,6 @@ output "kubelet_key_pems" {
   value = "${tls_private_key.kubelet.*.private_key_pem}"
 }
 
-
 output "kube-proxy_crt_file" {
   value = "${local_file.kube_proxy_crt.filename}"
 }
@@ -23,11 +22,35 @@ output "kube-proxy_key_file" {
   value = "${local_file.kube_proxy_key.filename}"
 }
 
+output "admin_crt_pem" {
+  value = "${tls_locally_signed_cert.kube_admin.cert_pem}"
+}
+
+output "admin_key_pem" {
+  value = "${tls_private_key.kube_admin.private_key_pem}"
+}
+
 output "kube-proxy_crt_pem" {
   value = "${tls_locally_signed_cert.kube_proxy.cert_pem}"
 }
 
 output "kube-proxy_key_pem" {
+  value = "${tls_private_key.kube_proxy.private_key_pem}"
+}
+
+output "kube-scheduler_crt_pem" {
+  value = "${tls_locally_signed_cert.kube_proxy.cert_pem}"
+}
+
+output "kube-scheduler_key_pem" {
+  value = "${tls_private_key.kube_proxy.private_key_pem}"
+}
+
+output "kube-controller-manager_crt_pem" {
+  value = "${tls_locally_signed_cert.kube_proxy.cert_pem}"
+}
+
+output "kube-controller-manager_key_pem" {
   value = "${tls_private_key.kube_proxy.private_key_pem}"
 }
 
