@@ -99,10 +99,11 @@ module "pki" {
 module "kubeconfig" {
   source = "modules/kubeconfig"
 
-  kubelet_node_names  = "${module.workers.names}"
-  kubelet_count       = "${var.worker_count}"
-  apiserver_public_ip = "${module.lb_masters.public_ip_address}"
-  node_user           = "${var.node_user}"
+  kubelet_node_names   = "${module.workers.names}"
+  apiserver_node_names = "${module.masters.names}"
+  kubelet_count        = "${var.worker_count}"
+  apiserver_public_ip  = "${module.lb_masters.public_ip_address}"
+  node_user            = "${var.node_user}"
 
   kubelet_crt_pems                = "${module.pki.kubelet_crt_pems}"
   kubelet_key_pems                = "${module.pki.kubelet_key_pems}"

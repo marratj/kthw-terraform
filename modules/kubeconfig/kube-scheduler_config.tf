@@ -15,14 +15,14 @@ resource "local_file" "kube-scheduler_config" {
 }
 
 resource "null_resource" "kube-scheduler-provisioner" {
-  count = "${length(var.kubelet_node_names)}"
+  count = "${length(var.apiserver_node_names)}"
 
   depends_on = ["local_file.kube-scheduler_config"]
 
   connection {
     type         = "ssh"
     user         = "${var.node_user}"
-    host         = "${element(var.kubelet_node_names, count.index)}"
+    host         = "${element(var.apiserver_node_names, count.index)}"
     bastion_host = "${var.apiserver_public_ip}"
   }
 

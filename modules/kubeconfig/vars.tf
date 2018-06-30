@@ -1,6 +1,11 @@
 variable "kubelet_node_names" {
   type        = "list"
-  description = "The list of nodes that will have a kubelet client certificate generated"
+  description = "The list of nodes that need to have kubeconfig files copied over"
+}
+
+variable "apiserver_node_names" {
+  type        = "list"
+  description = "The list of apiserver nodes that need to have kubeconfig files copied over"
 }
 
 variable "apiserver_public_ip" {
