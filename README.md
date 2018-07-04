@@ -18,11 +18,11 @@ Most probably there will be multiple refactors of the Terraform code, every time
 
 You need to have kubectl installed for interacting with the cluster and also for Terraform to be able to generate configuration files.
 
-Download the current release from https://storage.googleapis.com/kubernetes-release/release/v1.9.0/bin/linux/amd64/kubectl
+Download the current release from https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kubectl
 
 Also, you obviously need to have Terraform installed for running the code in this repository.
 
-Download the current version from https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
+Download the current version from https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
 
 Next, for Terraform to be able to authenticate with Azure, you either need to set up a service principal in your Azure account (https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html) or have Azure CLI installed (https://www.terraform.io/docs/providers/azurerm/authenticating_via_azure_cli.html)
 
