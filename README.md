@@ -91,6 +91,18 @@ https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/06-d
 
 This is achieved with the following Terraform module:
 
-[modules/encryption_config)(modules/encryption_config)
+[modules/encryption_config](modules/encryption_config)
 
 - This module creates the encryption config YAML file and copies it to the master nodes
+
+## Chapter 07 - Bootstrapping etcd
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/07-bootstrapping-etcd.md
+
+This is achieved with the following Terraform module:
+
+[modules/etcd](modules/etcd)
+
+- This module bootstraps the etcd cluster on the controller nodes
+
+We construct a fake dependency with the apiserver & CA certs here by using the internal resource IDs of those (after their respective creation) as input for the etcd module, so we can ensure that the etcd module will only be created once the certificate files are available (as we need to copy them into the etcd config dir).

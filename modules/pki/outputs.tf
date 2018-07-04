@@ -61,3 +61,11 @@ output "kube_ca_crt_file" {
 output "kube_ca_crt_pem" {
   value = "${tls_self_signed_cert.kube_ca.cert_pem}"
 }
+
+output "kubernetes_certs_null_ids" {
+  value = "null_resource.kubernetes_certs.*.id"
+}
+
+output "ca_cert_null_ids" {
+  value = "null_resource.ca_certs.*.id"
+}
