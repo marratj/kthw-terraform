@@ -125,3 +125,15 @@ module "encryption_config" {
 
   node_user = "${var.node_user}"
 }
+
+module "etcd" {
+  source                = "modules/etcd"
+  apiserver_node_names  = "${module.masters.names}"
+  apiserver_public_ip   = "${module.lb_masters.public_ip_address}"
+  apiserver_private_ips = "${var.master_ip_addresses}"
+
+  node_user = "${var.node_user}"
+
+  kubernetes_certs_null_ids = "${module.pki.kubernetes_certs_null_ids}"
+  ca_cert_null_ids          = "${module.pki.ca_cert_null_ids}"
+}

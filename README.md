@@ -18,11 +18,11 @@ Most probably there will be multiple refactors of the Terraform code, every time
 
 You need to have kubectl installed for interacting with the cluster and also for Terraform to be able to generate configuration files.
 
-Download the current release from https://storage.googleapis.com/kubernetes-release/release/v1.9.0/bin/linux/amd64/kubectl
+Download the current release from https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kubectl
 
 Also, you obviously need to have Terraform installed for running the code in this repository.
 
-Download the current version from https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
+Download the current version from https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
 
 Next, for Terraform to be able to authenticate with Azure, you either need to set up a service principal in your Azure account (https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html) or have Azure CLI installed (https://www.terraform.io/docs/providers/azurerm/authenticating_via_azure_cli.html)
 
@@ -91,6 +91,18 @@ https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/06-d
 
 This is achieved with the following Terraform module:
 
-[modules/encryption_config)(modules/encryption_config)
+[modules/encryption_config](modules/encryption_config)
 
 - This module creates the encryption config YAML file and copies it to the master nodes
+
+## Chapter 07 - Bootstrapping etcd
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/07-bootstrapping-etcd.md
+
+This is achieved with the following Terraform module:
+
+[modules/etcd](modules/etcd)
+
+- This module bootstraps the etcd cluster on the controller nodes
+
+We construct a fake dependency with the apiserver & CA certs here by using the internal resource IDs of those (after their respective creation) as input for the etcd module, so we can ensure that the etcd module will only be created once the certificate files are available (as we need to copy them into the etcd config dir).

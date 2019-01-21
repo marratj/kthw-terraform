@@ -101,5 +101,4 @@ resource "null_resource" "worker_ca_cert" {
     source      = "./generated/tls/ca.pem"
     destination = "~/ca.pem"
   }
-  
 }

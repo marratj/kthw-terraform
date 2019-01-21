@@ -1,4 +1,3 @@
-
 data "template_file" "kubelet_config_template" {
   template = "${file("${path.module}/kubelet_config.tpl")}"
 

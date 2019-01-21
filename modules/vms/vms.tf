@@ -14,11 +14,14 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = "${var.subnet_id}"
     private_ip_address_allocation = "${element(var.private_ip_addresses, count.index) != "" ? "static" : "dynamic"}"
     private_ip_address            = "${element(var.private_ip_addresses, count.index)}"
-
-    load_balancer_backend_address_pools_ids = [
-      "${var.lb_backend_pool != "" ? var.lb_backend_pool : ""}",
-    ]
   }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "test" {
+  count                   = "${var.vm_count}"
+  network_interface_id    = "${azurerm_network_interface.nic.*.id[count.index]}"
+  ip_configuration_name   = "${var.vm_prefix}-${count.index}-ip-config"
+  backend_address_pool_id = "${var.lb_backend_pool != "" ? var.lb_backend_pool : ""}"
 }
 
 resource "azurerm_virtual_machine" "vm" {

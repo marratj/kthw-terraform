@@ -3,9 +3,9 @@ data "template_file" "kube-proxy_config_template" {
 
   vars {
     certificate-authority-data = "${base64encode(var.kube_ca_crt_pem)}"
-    client-certificate-data = "${base64encode(var.kube-proxy_crt_pem)}"
-    client-key-data = "${base64encode(var.kube-proxy_key_pem)}"
-    apiserver_public_ip = "${var.apiserver_public_ip}"
+    client-certificate-data    = "${base64encode(var.kube-proxy_crt_pem)}"
+    client-key-data            = "${base64encode(var.kube-proxy_key_pem)}"
+    apiserver_public_ip        = "${var.apiserver_public_ip}"
   }
 }
 
