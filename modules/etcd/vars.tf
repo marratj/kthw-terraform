@@ -1,8 +1,10 @@
 variable "kubernetes_certs_null_ids" {
+  type = "list"
   description = "The ID of the kubernetes apiserver certificate null resource id for dependency"
 }
 
 variable "ca_cert_null_ids" {
+  type = "list"
   description = "The ID of the CA certificate null resource id for dependency"
 }
 

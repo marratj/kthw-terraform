@@ -63,9 +63,9 @@ output "kube_ca_crt_pem" {
 }
 
 output "kubernetes_certs_null_ids" {
-  value = "null_resource.kubernetes_certs.*.id"
+  value = "${null_resource.kubernetes_certs.*.id}"
 }
 
 output "ca_cert_null_ids" {
-  value = "null_resource.ca_certs.*.id"
+  value = "${null_resource.ca_certs.*.id}"
 }
