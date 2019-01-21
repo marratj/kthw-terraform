@@ -2,7 +2,6 @@ resource "random_string" "encryption_key" {
   length = 32
 }
 
-
 data "template_file" "encryption_config_template" {
   template = "${file("${path.module}/encryption_config.tpl")}"
 

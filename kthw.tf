@@ -127,9 +127,10 @@ module "encryption_config" {
 }
 
 module "etcd" {
-  source               = "modules/etcd"
-  apiserver_node_names = "${module.masters.names}"
-  apiserver_public_ip  = "${module.lb_masters.public_ip_address}"
+  source                = "modules/etcd"
+  apiserver_node_names  = "${module.masters.names}"
+  apiserver_public_ip   = "${module.lb_masters.public_ip_address}"
+  apiserver_private_ips = "${var.master_ip_addresses}"
 
   node_user = "${var.node_user}"
 

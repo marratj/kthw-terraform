@@ -1,16 +1,21 @@
 variable "kubernetes_certs_null_ids" {
-  type = "list"
+  type        = "list"
   description = "The ID of the kubernetes apiserver certificate null resource id for dependency"
 }
 
 variable "ca_cert_null_ids" {
-  type = "list"
+  type        = "list"
   description = "The ID of the CA certificate null resource id for dependency"
 }
 
 variable "apiserver_node_names" {
   type        = "list"
-  description = "The list of nodes that will have an apiserver certificate generated"
+  description = "The list of nodes that will have etcd installed"
+}
+
+variable "apiserver_private_ips" {
+  type        = "list"
+  description = "The list of IP addresses that will have etcd installed"
 }
 
 variable "apiserver_public_ip" {

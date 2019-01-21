@@ -14,7 +14,6 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = "${var.subnet_id}"
     private_ip_address_allocation = "${element(var.private_ip_addresses, count.index) != "" ? "static" : "dynamic"}"
     private_ip_address            = "${element(var.private_ip_addresses, count.index)}"
-
   }
 }
 
