@@ -137,3 +137,28 @@ module "etcd" {
   kubernetes_certs_null_ids = "${module.pki.kubernetes_certs_null_ids}"
   ca_cert_null_ids          = "${module.pki.ca_cert_null_ids}"
 }
+
+module "master_apiserver_inbound" {
+  source              = "modules/lb_rule"
+  resource_group_name = "${module.vnet.resource_group_name}"
+
+  loadbalancer_id           = "${module.lb_masters.lb_id}"
+  name                      = "kubernetes"
+  protocol                  = "Tcp"
+  frontend_port             = 6443
+  backend_port              = 6443
+  frontend_ip_configuration = "${module.lb_masters.frontend_ip_config}"
+  backend_ip_address_pool   = "${module.lb_masters.lb_backend_pool}"
+}
+
+module "controlplane" {
+  source                = "modules/controlplane"
+  apiserver_node_names  = "${module.masters.names}"
+  apiserver_public_ip   = "${module.lb_masters.public_ip_address}"
+  apiserver_private_ips = "${var.master_ip_addresses}"
+
+  node_user = "${var.node_user}"
+
+  kubernetes_certs_null_ids = "${module.pki.kubernetes_certs_null_ids}"
+  ca_cert_null_ids          = "${module.pki.ca_cert_null_ids}"
+}

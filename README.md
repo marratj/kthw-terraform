@@ -16,7 +16,7 @@ Most probably there will be multiple refactors of the Terraform code, every time
 
 You need to have kubectl installed for interacting with the cluster and also for Terraform to be able to generate configuration files.
 
-Download the current release from https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kubectl
+Download the current release from https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl
 
 Also, you obviously need to have Terraform installed for running the code in this repository.
 
@@ -104,3 +104,22 @@ This is achieved with the following Terraform module:
 - This module bootstraps the etcd cluster on the controller nodes
 
 We construct a fake dependency with the apiserver & CA certs here by using the internal resource IDs of those (after their respective creation) as input for the etcd module, so we can ensure that the etcd module will only be created once the certificate files are available (as we need to copy them into the etcd config dir).
+
+## Chapter 08 - Bootstrapping the Kubernetes Control Plane
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/08-bootstrapping-kubernetes-controllers.md
+
+This is achieved with the following Terraform module:
+
+[modules/controlplane](modules/controlplane)
+
+- This module bootstraps the Kubernetes control plane components on the controller nodes
+
+
+## Troubleshooting
+
+Connect via SSH to one of the nodes:
+
+```
+ssh -A -J kubeheinz@loadbalancer.ip kubeheinz@kthw-master-0
+```
